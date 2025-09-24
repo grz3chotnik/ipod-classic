@@ -111,6 +111,7 @@ p {
   grid-template-columns: repeat(3, 30px);
   grid-template-rows: repeat(3, 30px);
   cursor: grab;
+  user-select: none;
 
 }
 
