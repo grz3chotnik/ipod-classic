@@ -12,8 +12,8 @@ import Battery from '../assets/battery.svg';
 const spotifyApi = new SpotifyWebApi();
 
 const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
-const REDIRECT_URI = 'https://ipod.2004.lol/';
-// const REDIRECT_URI = 'http://localhost:1212/';
+// const REDIRECT_URI = 'https://ipod.2004.lol/';
+const REDIRECT_URI = 'http://localhost:1212/';
 
 const SCOPES = [
     'playlist-read-private',
@@ -52,7 +52,7 @@ const SpotiPlayer: React.FC = () => {
     const [highlightedPlaylistIndex, setHighlightedPlaylistIndex] = useState(0);
     const [highlightedTrackIndex, setHighlightedTrackIndex] = useState(0);
     const [songDuration, setSongDuration] = useState(0);
-    const [songPosition, setSongPosition] = useState<string>("");
+    const [songPosition, setSongPosition] = useState<number>(0);
     const [isDragging, setIsDragging] = useState(false);
     const [nowPlayingIndex, SetNowPlayingIndex] = useState(1);
 
@@ -65,7 +65,7 @@ const SpotiPlayer: React.FC = () => {
     const [screen, setScreen] = useState(Screen.Playlist);
 
     const handleSeek = (number: string) => {
-        setSongPosition(number);
+        setSongPosition(Number(number));
     };
     const formatTime = (ms: number) => {
         const totalSeconds = Math.floor(ms / 1000);
@@ -438,9 +438,9 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.Playlist && (
                     <>
                         <div className="statusbar ">
-                            <img src={isPlaying ? Play : Pause} height="20px"/>
+                            <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
                             <p className="ipodtitle">Playlist</p>
-                            <img src={Battery} height="15px"/>
+                            <img src={Battery} height="15px" alt="battery"/>
                         </div>
                         <div className="playlistall">
                             {playlists.length > 0 ? (
@@ -477,7 +477,7 @@ const SpotiPlayer: React.FC = () => {
                                 alt="play/pause"
                             />
                             <p className="ipodtitle">Songs</p>
-                            <img src={Battery} height="15px" alt="battery" />
+                            <img src={Battery} height="15px" alt="battery"/>
                         </div>
 
                         {selectedPlaylist && (
@@ -507,7 +507,7 @@ const SpotiPlayer: React.FC = () => {
                                                         height="29px"
                                                         alt="album cover"
                                                     />
-                                                    <div style={{ marginLeft: "5px" }}>
+                                                    <div style={{marginLeft: "5px"}}>
                                                         {track.name} – {track.artists?.[0]?.name}
                                                     </div>
                                                 </div>
@@ -527,7 +527,7 @@ const SpotiPlayer: React.FC = () => {
                     <>
                         <div className="statusbar ">
                             <img
-                                src={isPlaying === true ? Play : Pause}
+                                src={isPlaying ? Play : Pause}
                                 height="20px"
                                 alt="play/pause"
                             />
@@ -539,6 +539,7 @@ const SpotiPlayer: React.FC = () => {
                                 src={track ? track.album.images?.[0]?.url : blacksquare}
                                 height="150px"
                                 className="nowplayingimg"
+                                alt="now playing track image"
                             />
                             <div className="nowplayingdata">
                                 <h1>{track ? track.name : ''}</h1>
