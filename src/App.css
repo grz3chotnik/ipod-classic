@@ -1,0 +1,405 @@
+/*
+ * @NOTE: Prepend a `~` to css file paths that are in your node_modules
+ *        See https://github.com/webpack-contrib/sass-loader#imports
+ */
+
+body {
+  position: relative;
+  height: 100vh;
+  background: transparent;
+  font-family: sans-serif;
+  overflow-y: hidden;
+  display: flex; /* Uncomment this */
+  justify-content: center; /* Uncomment this */
+  align-items: center; /* Uncomment this */
+  user-select: none;
+  width: 900px;
+  margin: 0 auto; /* Add this */
+}
+
+button {
+  display: flex;
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  appearance: none;
+  font-size: 1.3rem;
+  color: #D9D9D9;
+  font-weight: bold;
+  transition: all ease-in 0.01s;
+  cursor: pointer;
+  opacity: 0.9;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  height: fit-content;
+  width: fit-content;
+  margin: 10px;
+}
+
+a:hover {
+  opacity: 1;
+  text-decoration: none;
+}
+
+p {
+  color: black;
+  text-align: left;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  height: 25px;
+  padding-left: 6px;
+  margin: 0;
+  background: #666666;
+  background-clip: text;
+
+}
+
+p {
+
+}
+
+.Hello {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.player {
+
+  background-color: #D9D9D9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 700px;
+  width: 100%;
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0px 0px 43px 0px rgba(0, 0, 0, 0.52) inset;
+
+}
+
+.nowplaying {
+  cursor: grab;
+  app-region: drag;
+}
+
+.Screen {
+  background-color: white;
+  width: 380px;
+  height: 280px;
+  margin: 31px 31px 50px;
+  border: 2px solid black;
+  border-radius: 15px;
+  overflow: hidden;;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.Scrollwheel {
+  display: grid;
+  gap: 90px;
+  place-items: center;
+  grid-template-columns: repeat(3, 30px);
+  grid-template-rows: repeat(3, 30px);
+  cursor: grab;
+
+}
+
+.Scrollwheel:active {
+  cursor: grabbing;
+}
+
+.ScrollwheelBg {
+  grid-column: 2;
+  grid-row: 2;
+  background-color: white;
+  width: 314px;
+  height: 314px;
+  border-radius: 100%;
+}
+
+.top {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.bottom {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+.left {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.right {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.center {
+  grid-column: 2;
+  grid-row: 2;
+  background-color: #D9D9D9;
+  width: 124px;
+  height: 124px;
+  border-radius: 124px;
+}
+
+/*.center:active {*/
+/*  box-shadow: 0px 0px 43px 0px rgba(0,0,0,0.10) inset;*/
+
+/*}*/
+ul {
+  color: black;
+  overflow-y: scroll;
+  max-height: 190px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+}
+
+
+ul::-webkit-scrollbar {
+  display: none;
+}
+
+li {
+  text-align: left;
+  width: 350px;
+  white-space: wrap; /* Allow text to wrap */
+  word-wrap: anywhere; /* Break long words if necessary */
+  padding: 2px;
+  /*transition: opacity 0.1s ease;*/
+  transition: background-color 0.05s ease, color 0.2s ease;
+
+
+  border-top: 1px solid #D9D9D9;
+
+  /*border-top: 1px solid #D9D9D9;*/
+}
+
+/*li:hover {*/
+/*  display: flex;*/
+/*  color: blue;*/
+/*}*/
+
+li:hover {
+  opacity: 0.7;
+}
+
+audio {
+  padding-left: 6px;
+}
+
+
+#scroller button:focus {
+  outline: none;
+}
+
+
+.musicbar {
+  width: 60%;
+
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 15px;
+  background: #ccc;
+  border-radius: 4px;
+  outline: none;
+  margin: 5px;
+
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgb(169, 169, 169);
+  cursor: pointer;
+
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: rgba(51, 163, 255, 0.82);
+
+}
+
+
+.musicbardiv {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 15px;
+  padding: 0 5px;
+
+}
+
+.playlist {
+  overflow: scroll;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+}
+
+.playlistname {
+  display: flex;
+  flex-direction: row;
+  color: black;
+  font-weight: bold;
+}
+
+.playlistall {
+  height: 280px;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+}
+
+.playlistname:hover {
+  background-color: #D9D9D9;
+}
+
+.playlistsong {
+height: 30px;
+  display: flex;
+  align-items: center;
+  color: black;
+  font-weight: bold;
+}
+
+
+
+.playlistsongslist {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.playlistsong:hover {
+  background-color: #D9D9D9;
+
+}
+
+.currentlyplaying {
+  display: flex;
+}
+
+.playlistname.highlighted,
+.playlistsong.highlighted {
+  background: linear-gradient(0deg, rgb(47, 108, 187) 0%, rgba(135, 203, 255, 1) 100%);
+  padding: 4px;
+  color: white;
+}
+
+.playlistname.highlighted p {
+  color: white;
+}
+
+.seeker {
+width: 70%;
+
+}
+
+.seekerdiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+
+
+
+
+}
+
+.seekerdiv p {
+  display: flex;
+
+}
+
+.nowplayingscreen {
+  display: flex;
+  flex-direction: row;
+  justify-self: end;
+  align-self: start;
+  height: 100%;
+  align-items: center;
+  perspective: 116px;
+  padding-right: 35px;
+  padding-left: 35px;
+}
+.nowplayingdata {
+  display: flex;
+  flex-direction: column;
+}
+.nowplayingimg {
+  transform: rotateX(0deg) rotateY(7deg);
+  transform-style: preserve-3d;
+  -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+  box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+}
+.tracksleft {
+  margin-top: 15px;
+}
+
+h1 {
+  font-size: 20px;
+  margin: 0;
+  padding-left: 6px;
+  overflow-wrap: break-word;
+
+
+}
+
+h2 {
+  color: black;
+  text-align: left;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  height: 25px;
+  padding-left: 6px;
+  margin: 0;
+
+}
+
+.statusbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: #dedede;
+  background: linear-gradient(0deg, rgba(222, 222, 222, 1) 0%, rgba(255, 255, 255, 1) 100%);
+
+}
+
+.ipodtitle {
+  font-weight: bold;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
