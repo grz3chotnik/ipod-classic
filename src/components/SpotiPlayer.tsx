@@ -57,6 +57,10 @@ const SpotiPlayer: React.FC = () => {
     const [isDragging, setIsDragging] = useState(false);
     const [nowPlayingIndex, SetNowPlayingIndex] = useState(1);
 
+    let now = new Date()
+    let hours = now.getHours()
+    let minutes = now.getMinutes()
+
     const enum Screen {
         List,
         Playlist,
@@ -439,9 +443,11 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.Playlist && (
                     <>
                         <div className="statusbar ">
-                            <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
-                            <p className="ipodtitle">Playlist</p>
-                            <img src={Battery} height="15px" alt="battery"/>
+                            <p className="leftinfo">{hours} {minutes}</p>
+                            <div className="rightinfo" >
+                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                                <img src={Battery} height="15px" alt="battery"/>
+                            </div>
                         </div>
                         <div className="playlistall">
                             {playlists.length > 0 ? (
@@ -471,14 +477,12 @@ const SpotiPlayer: React.FC = () => {
 
                 {screen === Screen.List && (
                     <>
-                        <div className="statusbar">
-                            <img
-                                src={isPlaying ? Play : Pause}
-                                height="20px"
-                                alt="play/pause"
-                            />
-                            <p className="ipodtitle">Songs</p>
-                            <img src={Battery} height="15px" alt="battery"/>
+                        <div className="statusbar ">
+                            <p className="leftinfo">{hours} {minutes}</p>
+                            <div className="rightinfo" >
+                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                                <img src={Battery} height="15px" alt="battery"/>
+                            </div>
                         </div>
 
                         {selectedPlaylist && (
@@ -527,13 +531,11 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.NowPlaying && (
                     <>
                         <div className="statusbar ">
-                            <img
-                                src={isPlaying ? Play : Pause}
-                                height="20px"
-                                alt="play/pause"
-                            />
-                            <p className="ipodtitle">Now Playing</p>
-                            <img src={Battery} height="15px" alt="battery"/>
+                            <p className="leftinfo">{hours} {minutes}</p>
+                            <div className="rightinfo" >
+                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                                <img src={Battery} height="15px" alt="battery"/>
+                            </div>
                         </div>
                         <div className="nowplayingscreen">
                             <img

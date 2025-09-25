@@ -96,7 +96,7 @@ p {
   width: 380px;
   height: 280px;
   margin: 31px 31px 50px;
-  border: 2px solid black;
+  border: 5px solid black;
   border-radius: 15px;
   overflow: hidden;;
   display: flex;
@@ -394,8 +394,18 @@ h2 {
 
 }
 
-.ipodtitle {
+.rightinfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+
+.leftinfo {
   font-weight: bold;
+  display: flex;
+  align-items: center;
+
 }
 
 .logo {
@@ -404,3 +414,5 @@ h2 {
   justify-content: center;
   height: 100%;
 }
+
+
