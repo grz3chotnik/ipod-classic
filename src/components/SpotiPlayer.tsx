@@ -15,6 +15,7 @@ const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
 const REDIRECT_URI = 'https://ipod.2004.lol/';
 // const REDIRECT_URI = 'http://localhost:1212/';
 
+
 const SCOPES = [
     'playlist-read-private',
     'playlist-read-collaborative',
@@ -113,7 +114,7 @@ const SpotiPlayer: React.FC = () => {
         spotifyApi.setAccessToken(token);
 
         const fetchPlaylists = () => {
-            spotifyApi.getUserPlaylists('krzychu340').then(
+            spotifyApi.getUserPlaylists().then(
                 function (data) {
                     setPlaylists(data.items || []);
                     setHighlightedPlaylistIndex(0);

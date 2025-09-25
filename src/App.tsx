@@ -4,12 +4,9 @@ import './App.css';
 import React, {useRef, useState, useEffect} from 'react';
 import {useNavigate} from 'react-router-dom';
 import SpotiPlayer from './components/SpotiPlayer.js';
-import {Analytics} from "@vercel/analytics/next"
 
 export default function App() {
     return (
-
-
         <>
             <Router>
                 <div>
