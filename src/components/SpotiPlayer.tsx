@@ -8,6 +8,7 @@ import blacksquare from '../assets/square.png';
 import Play from '../assets/Play.svg';
 import Pause from '../assets/Pause.svg';
 import Battery from '../assets/battery.svg';
+import Batterylow from '../assets/batterylow.svg';
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -56,9 +57,7 @@ const SpotiPlayer: React.FC = () => {
     const [songPosition, setSongPosition] = useState<number>(0);
     const [isDragging, setIsDragging] = useState(false);
     const [nowPlayingIndex, SetNowPlayingIndex] = useState(1);
-    const [isHolding, setIsHolding] = useState(false);
-    const timerRef = useRef(null);
-    const holdTime = 500;
+    const [batteryStatus, setBatteryStatus] = useState(Battery)
 
     let now = new Date()
     let hours: string | number = now.getHours()
@@ -458,7 +457,13 @@ const SpotiPlayer: React.FC = () => {
                     <div className="rightinfo">
                         <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"
                              onClick={isPlaying ? handlePause : handlePlay}/>
-                        <img src={Battery} height="15px" alt="battery"/>
+                        <img src={batteryStatus} height="15px" alt="battery" onClick={() => {
+                            if (batteryStatus === Battery) {
+                                setBatteryStatus(Batterylow)
+                            } else {
+                                setBatteryStatus(Battery)
+                            }
+                        }}/>
                     </div>
                 </div>
                 <div className="screencontainer"
