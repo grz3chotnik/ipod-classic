@@ -56,10 +56,16 @@ const SpotiPlayer: React.FC = () => {
     const [songPosition, setSongPosition] = useState<number>(0);
     const [isDragging, setIsDragging] = useState(false);
     const [nowPlayingIndex, SetNowPlayingIndex] = useState(1);
+    const [isHolding, setIsHolding] = useState(false);
+    const timerRef = useRef(null);
+    const holdTime = 500;
 
     let now = new Date()
     let hours = now.getHours()
-    let minutes = now.getMinutes()
+    let minutes: string | number = now.getMinutes()
+
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    hours = hours < 10 ? '0' + hours : hours;
 
     const enum Screen {
         List,
@@ -69,9 +75,15 @@ const SpotiPlayer: React.FC = () => {
 
     const [screen, setScreen] = useState(Screen.Playlist);
 
-    const handleSeek = (number: string) => {
-        setSongPosition(Number(number));
-    };
+    // const handleSeek = (number: string) => {
+    //     setSongPosition(Number(number));
+    // };
+
+    const handleHoldForward = () => {
+        spotifyApi.seek(songPosition + 10000)
+    }
+
+
     const formatTime = (ms: number) => {
         const totalSeconds = Math.floor(ms / 1000);
         const minutes = Math.floor(totalSeconds / 60);
@@ -315,6 +327,7 @@ const SpotiPlayer: React.FC = () => {
     const handleNext = () => {
         spotifyApi.skipToNext();
         SetNowPlayingIndex(nowPlayingIndex + 1);
+
     };
 
     const handlePrev = () => {
@@ -443,9 +456,9 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.Playlist && (
                     <>
                         <div className="statusbar ">
-                            <p className="leftinfo">{hours} {minutes}</p>
-                            <div className="rightinfo" >
-                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                            <p className="leftinfo">{hours}:{minutes}</p>
+                            <div className="rightinfo">
+                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
                                 <img src={Battery} height="15px" alt="battery"/>
                             </div>
                         </div>
@@ -478,9 +491,9 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.List && (
                     <>
                         <div className="statusbar ">
-                            <p className="leftinfo">{hours} {minutes}</p>
-                            <div className="rightinfo" >
-                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                            <p className="leftinfo">{hours}:{minutes}</p>
+                            <div className="rightinfo">
+                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
                                 <img src={Battery} height="15px" alt="battery"/>
                             </div>
                         </div>
@@ -531,9 +544,9 @@ const SpotiPlayer: React.FC = () => {
                 {screen === Screen.NowPlaying && (
                     <>
                         <div className="statusbar ">
-                            <p className="leftinfo">{hours} {minutes}</p>
-                            <div className="rightinfo" >
-                                <img src={isPlaying ? Play : Pause} height="20px" alt="play /pause"/>
+                            <p className="leftinfo">{hours}:{minutes}</p>
+                            <div className="rightinfo">
+                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
                                 <img src={Battery} height="15px" alt="battery"/>
                             </div>
                         </div>
@@ -546,31 +559,42 @@ const SpotiPlayer: React.FC = () => {
                             />
                             <div className="nowplayingdata">
                                 <h1>{track ? track.name : ''}</h1>
-                                <h2>{track ? track.artists?.[0]?.name : ''}</h2>
+                                <p>{track ? track.artists?.[0]?.name : ''}</p>
+                                <p>
+                                    {track?.album.name}
+                                </p>
                                 <p className="tracksleft">
                                     {nowPlayingIndex} of {playlistTracks.length}
                                 </p>
                             </div>
                         </div>
                         <div className="seekerdiv">
-                            <p> {formatTime(songPosition)} </p>
-                            <input
-                                type="range"
-                                className="seeker"
-                                value={songPosition}
-                                max={songDuration}
-                                onChange={(e) => {
-                                    handleSeek(e.target.value);
-                                }}
-                                onMouseUp={() => {
-                                    spotifyApi.seek(songPosition);
-                                    setIsDragging(false);
-                                }}
-                                onMouseDown={() => {
-                                    setIsDragging(true);
-                                }}
-                            />{' '}
-                            <p>{formatTime(songDuration)}</p>
+                            <p className="songposition"> {formatTime(songPosition)} </p>
+                            {/*<input*/}
+                            {/*    type="range"*/}
+                            {/*    className="seeker"*/}
+                            {/*    value={songPosition}*/}
+                            {/*    max={songDuration}*/}
+                            {/*    onChange={(e) => {*/}
+                            {/*        handleSeek(e.target.value);*/}
+                            {/*    }}*/}
+                            {/*    onMouseUp={() => {*/}
+                            {/*        spotifyApi.seek(songPosition);*/}
+                            {/*        setIsDragging(false);*/}
+                            {/*    }}*/}
+                            {/*    onMouseDown={() => {*/}
+                            {/*        setIsDragging(true);*/}
+                            {/*    }}*/}
+                            {/*/>{' '}*/}
+
+                            <div className="scrubber">
+                                <div className="scrubberprogress"
+                                     style={{width: `${(songPosition / songDuration) * 100}%`}}
+                                    // onMouseDown={handleMouseDown}
+                                    // onMouseUp={handleMouseUp}
+                                ></div>
+                            </div>
+                            <p className="songposition">{formatTime(songDuration)}</p>
                         </div>
                     </>
                 )}
@@ -607,7 +631,9 @@ const SpotiPlayer: React.FC = () => {
                 <button className="left" type="button" onClick={() => handlePrev()}>
                     <img src={backIcon} alt="prev song"/>
                 </button>
-                <button className="right" type="button" onClick={() => handleNext()}>
+                <button className="right" type="button"
+                        onClick={() => handleNext()}
+                >
                     <img src={nextIcon} alt="next song"/>
                 </button>
 
