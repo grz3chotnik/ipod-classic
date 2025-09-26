@@ -68,9 +68,9 @@ const SpotiPlayer: React.FC = () => {
     hours = hours < 10 ? '0' + hours : hours;
 
     const enum Screen {
-        List,
-        Playlist,
-        NowPlaying,
+        List = 1,
+        Playlist = 0,
+        NowPlaying = 2,
     }
 
     const [screen, setScreen] = useState(Screen.Playlist);
@@ -453,103 +453,119 @@ const SpotiPlayer: React.FC = () => {
         <div className="player">
 
             <div className="Screen">
-                {screen === Screen.Playlist && (
+                <div className="statusbar ">
+                    <p className="leftinfo">{hours}:{minutes}</p>
+                    <div className="rightinfo">
+                        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause" onClick={isPlaying ? handlePause : handlePlay}/>
+                        <img src={Battery} height="15px" alt="battery"/>
+                    </div>
+                </div>
+                <div className="screencontainer"
+                     style={{
+                         transform: `translateX(-${screen * 100}%)`,
+                         transition: 'transform 0.3s ease-in-out',
+                     }}>
+
                     <>
-                        <div className="statusbar ">
-                            <p className="leftinfo">{hours}:{minutes}</p>
-                            <div className="rightinfo">
-                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
-                                <img src={Battery} height="15px" alt="battery"/>
+                        <div className="screen screen-playlist">
+
+
+                            {/*<div className="statusbar ">*/}
+                            {/*    <p className="leftinfo">{hours}:{minutes}</p>*/}
+                            {/*    <div className="rightinfo">*/}
+                            {/*        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>*/}
+                            {/*        <img src={Battery} height="15px" alt="battery"/>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            <div className="playlistall">
+                                {playlists.length > 0 ? (
+                                    playlists.map((playlist, index: number) => (
+                                        <div
+                                            className={`playlistname ${focusArea === 'playlists' && highlightedPlaylistIndex === index ? 'highlighted' : ''}`}
+                                            key={playlist.id}
+                                            onClick={() => onPlaylistClick(index, playlist)}
+                                            ref={(element) => {
+                                                playlistRef.current[index] = element;
+                                            }}
+                                        >
+                                            <img
+                                                src={playlist.images?.[0]?.url ?? blacksquare}
+                                                height="25px"
+                                                alt="playlist cover"
+                                            />
+                                            <p>{playlist.name}</p>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="loading">Loading...</p>
+                                )}
                             </div>
                         </div>
-                        <div className="playlistall">
-                            {playlists.length > 0 ? (
-                                playlists.map((playlist, index: number) => (
-                                    <div
-                                        className={`playlistname ${focusArea === 'playlists' && highlightedPlaylistIndex === index ? 'highlighted' : ''}`}
-                                        key={playlist.id}
-                                        onClick={() => onPlaylistClick(index, playlist)}
-                                        ref={(element) => {
-                                            playlistRef.current[index] = element;
-                                        }}
-                                    >
-                                        <img
-                                            src={playlist.images?.[0]?.url ?? blacksquare}
-                                            height="25px"
-                                            alt="playlist cover"
-                                        />
-                                        <p>{playlist.name}</p>
+                    </>
+
+
+                    <>
+                        <div className="screen screen-list">
+                            {/*<div className="statusbar ">*/}
+                            {/*    <p className="leftinfo">{hours}:{minutes}</p>*/}
+                            {/*    <div className="rightinfo">*/}
+                            {/*        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>*/}
+                            {/*        <img src={Battery} height="15px" alt="battery"/>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+
+                            {selectedPlaylist && (
+                                <div className="playlist">
+                                    <div className="playlistsongslist">
+                                        {playlistTracks.length > 0 ? (
+                                            playlistTracks.map((item, index: number) => {
+                                                const track = item.track;
+
+                                                if (!track || track.type !== "track") return null;
+
+                                                return (
+                                                    <div
+                                                        className={`playlistsong ${
+                                                            focusArea === "tracks" && highlightedTrackIndex === index
+                                                                ? "highlighted"
+                                                                : ""
+                                                        }`}
+                                                        key={track.id}
+                                                        onClick={() => onTrackClick(index, item)}
+                                                        ref={(el) => {
+                                                            trackRef.current[index] = el;
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={track.album.images?.[0]?.url ?? blacksquare}
+                                                            height="29px"
+                                                            alt="album cover"
+                                                        />
+                                                        <div style={{marginLeft: "5px"}}>
+                                                            {track.name} – {track.artists?.[0]?.name}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })
+                                        ) : (
+                                            <p className="loading">Loading...</p>
+                                        )}
                                     </div>
-                                ))
-                            ) : (
-                                <p>Loading...</p>
+                                </div>
                             )}
                         </div>
+
                     </>
-                )}
-
-                {screen === Screen.List && (
-                    <>
-                        <div className="statusbar ">
-                            <p className="leftinfo">{hours}:{minutes}</p>
-                            <div className="rightinfo">
-                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
-                                <img src={Battery} height="15px" alt="battery"/>
-                            </div>
-                        </div>
-
-                        {selectedPlaylist && (
-                            <div className="playlist">
-                                <div className="playlistsongslist">
-                                    {playlistTracks.length > 0 ? (
-                                        playlistTracks.map((item, index: number) => {
-                                            const track = item.track;
-
-                                            if (!track || track.type !== "track") return null;
-
-                                            return (
-                                                <div
-                                                    className={`playlistsong ${
-                                                        focusArea === "tracks" && highlightedTrackIndex === index
-                                                            ? "highlighted"
-                                                            : ""
-                                                    }`}
-                                                    key={track.id}
-                                                    onClick={() => onTrackClick(index, item)}
-                                                    ref={(el) => {
-                                                        trackRef.current[index] = el;
-                                                    }}
-                                                >
-                                                    <img
-                                                        src={track.album.images?.[0]?.url ?? blacksquare}
-                                                        height="29px"
-                                                        alt="album cover"
-                                                    />
-                                                    <div style={{marginLeft: "5px"}}>
-                                                        {track.name} – {track.artists?.[0]?.name}
-                                                    </div>
-                                                </div>
-                                            );
-                                        })
-                                    ) : (
-                                        <p>loading</p>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                    </>
-                )}
 
 
-                {screen === Screen.NowPlaying && (
-                    <>
-                        <div className="statusbar ">
-                            <p className="leftinfo">{hours}:{minutes}</p>
-                            <div className="rightinfo">
-                                <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>
-                                <img src={Battery} height="15px" alt="battery"/>
-                            </div>
-                        </div>
+                    <div className="screen screen-nowplaying">
+                        {/*<div className="statusbar ">*/}
+                        {/*    <p className="leftinfo">{hours}:{minutes}</p>*/}
+                        {/*    <div className="rightinfo">*/}
+                        {/*        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>*/}
+                        {/*        <img src={Battery} height="15px" alt="battery"/>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                         <div className="nowplayingscreen">
                             <img
                                 src={track ? track.album.images?.[0]?.url : blacksquare}
@@ -596,9 +612,13 @@ const SpotiPlayer: React.FC = () => {
                             </div>
                             <p className="songposition">{formatTime(songDuration)}</p>
                         </div>
+                    </div>
+                    <>
+
                     </>
-                )}
+                </div>
             </div>
+
 
             <div
                 className="Scrollwheel"
