@@ -75,9 +75,9 @@ const SpotiPlayer: React.FC = () => {
 
     const [screen, setScreen] = useState(Screen.Playlist);
 
-    // const handleSeek = (number: string) => {
-    //     setSongPosition(Number(number));
-    // };
+    const handleSeek = (number: string) => {
+        setSongPosition(Number(number));
+    };
 
     const handleHoldForward = () => {
         spotifyApi.seek(songPosition + 10000)
@@ -570,22 +570,22 @@ const SpotiPlayer: React.FC = () => {
                         </div>
                         <div className="seekerdiv">
                             <p className="songposition"> {formatTime(songPosition)} </p>
-                            {/*<input*/}
-                            {/*    type="range"*/}
-                            {/*    className="seeker"*/}
-                            {/*    value={songPosition}*/}
-                            {/*    max={songDuration}*/}
-                            {/*    onChange={(e) => {*/}
-                            {/*        handleSeek(e.target.value);*/}
-                            {/*    }}*/}
-                            {/*    onMouseUp={() => {*/}
-                            {/*        spotifyApi.seek(songPosition);*/}
-                            {/*        setIsDragging(false);*/}
-                            {/*    }}*/}
-                            {/*    onMouseDown={() => {*/}
-                            {/*        setIsDragging(true);*/}
-                            {/*    }}*/}
-                            {/*/>{' '}*/}
+                            <input
+                                type="range"
+                                className="seeker"
+                                value={songPosition}
+                                max={songDuration}
+                                onChange={(e) => {
+                                    handleSeek(e.target.value);
+                                }}
+                                onMouseUp={() => {
+                                    spotifyApi.seek(songPosition);
+                                    setIsDragging(false);
+                                }}
+                                onMouseDown={() => {
+                                    setIsDragging(true);
+                                }}
+                            />{' '}
 
                             <div className="scrubber">
                                 <div className="scrubberprogress"
