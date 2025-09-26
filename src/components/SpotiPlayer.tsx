@@ -12,8 +12,8 @@ import Battery from '../assets/battery.svg';
 const spotifyApi = new SpotifyWebApi();
 
 const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
-const REDIRECT_URI = 'https://ipod.2004.lol/';
-// const REDIRECT_URI = 'http://localhost:1212/';
+// const REDIRECT_URI = 'https://ipod.2004.lol/';
+const REDIRECT_URI = 'http://localhost:1212/';
 
 
 const SCOPES = [
@@ -61,7 +61,7 @@ const SpotiPlayer: React.FC = () => {
     const holdTime = 500;
 
     let now = new Date()
-    let hours = now.getHours()
+    let hours: string | number = now.getHours()
     let minutes: string | number = now.getMinutes()
 
     minutes = minutes < 10 ? '0' + minutes : minutes;
@@ -456,7 +456,8 @@ const SpotiPlayer: React.FC = () => {
                 <div className="statusbar ">
                     <p className="leftinfo">{hours}:{minutes}</p>
                     <div className="rightinfo">
-                        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause" onClick={isPlaying ? handlePause : handlePlay}/>
+                        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"
+                             onClick={isPlaying ? handlePause : handlePlay}/>
                         <img src={Battery} height="15px" alt="battery"/>
                     </div>
                 </div>
@@ -490,8 +491,9 @@ const SpotiPlayer: React.FC = () => {
                                         >
                                             <img
                                                 src={playlist.images?.[0]?.url ?? blacksquare}
-                                                height="25px"
+                                                height="30px"
                                                 alt="playlist cover"
+                                                className="playlistimg"
                                             />
                                             <p>{playlist.name}</p>
                                         </div>
@@ -538,8 +540,9 @@ const SpotiPlayer: React.FC = () => {
                                                     >
                                                         <img
                                                             src={track.album.images?.[0]?.url ?? blacksquare}
-                                                            height="29px"
+                                                            height="30px"
                                                             alt="album cover"
+                                                            className="trackimg"
                                                         />
                                                         <div style={{marginLeft: "5px"}}>
                                                             {track.name} – {track.artists?.[0]?.name}

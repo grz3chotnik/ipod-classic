@@ -9,12 +9,12 @@ body {
     background: transparent;
     font-family: Helvetica;
     overflow-y: hidden;
-    display: flex; /* Uncomment this */
-    justify-content: center; /* Uncomment this */
-    align-items: center; /* Uncomment this */
+    display: flex;
+    justify-content: center;
+    align-items: center;
     user-select: none;
-    width: 900px;
-    margin: 0 auto; /* Add this */
+    width: 100%;
+    margin: 0 auto;
 }
 
 button {
@@ -286,6 +286,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
     display: flex;
     flex-direction: row;
     font-weight: bold;
+    height: 29px;
 }
 
 .playlistname p {
@@ -412,6 +413,15 @@ input[type="range"]::-webkit-slider-thumb:hover {
     z-index: -1;
 }
 
+.playlistimg {
+    height: 29px;
+    width: 29px;
+}
+
+.trackimg {
+    /*height: 29px;*/
+}
+
 .tracksleft {
     margin-top: 15px;
 }
@@ -448,6 +458,7 @@ h2 {
     border-bottom: 1px solid #424447;
     height: 20px;
 }
+
 .loading {
     color: #424447;
     padding-top: 16px;
