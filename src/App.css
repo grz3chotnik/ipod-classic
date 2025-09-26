@@ -95,9 +95,35 @@ p {
     margin: 31px 31px 50px;
     border: 5px solid black;
     border-radius: 15px;
-    overflow: hidden;;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
+}
+
+.screencontainer {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.screen {
+    width: 100%;
+    flex: 0 0 100%;
+    box-sizing: border-box;
+}
+
+.screen-playlist {
+    height: 261.5px;
+}
+
+.screen-list {
+    height: 261.5px;
+}
+
+.screen-nowplaying {
+    display: flex;
+    flex-direction: column;
+    height: 261.5px;
 }
 
 
@@ -267,7 +293,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .playlistall {
-    height: 280px;
+    height: 100%;
     overflow: scroll;
     display: flex;
     flex-direction: column;
@@ -304,7 +330,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .playlistname.highlighted,
 .playlistsong.highlighted {
     background: linear-gradient(0deg, rgb(47, 108, 187) 0%, rgba(135, 203, 255, 1) 100%);
-    padding: 4px;
     color: white;
 }
 
@@ -313,7 +338,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .seeker {
-    width: 280px ;
+    width: 280px;
     z-index: 1;
     -webkit-box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 30%, rgba(0, 0, 0, 0.6) 100%);
     position: absolute;
@@ -365,11 +390,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 }
 
 .nowplayingscreen {
+    height: 100%;
     display: flex;
     flex-direction: row;
-    justify-self: end;
-    align-self: start;
-    height: 100%;
     align-items: center;
     perspective: 116px;
     padding-right: 25px;
@@ -423,7 +446,11 @@ h2 {
     background: #9A9B9D;
     background: linear-gradient(0deg, rgba(154, 155, 157, 1) 0%, rgba(249, 249, 249, 1) 100%);
     border-bottom: 1px solid #424447;
-
+    height: 20px;
+}
+.loading {
+    color: #424447;
+    padding-top: 16px;
 }
 
 .rightinfo {
