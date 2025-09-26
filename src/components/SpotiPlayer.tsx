@@ -384,10 +384,10 @@ const SpotiPlayer: React.FC = () => {
             );
             const delta = angle - lastAngleRef.current;
 
-            if (delta > 15) {
+            if (delta > 20) {
                 moveSelection(-1);
                 lastAngleRef.current = angle;
-            } else if (delta < -15) {
+            } else if (delta < -20) {
                 moveSelection(1);
                 lastAngleRef.current = angle;
             }
@@ -602,6 +602,13 @@ const SpotiPlayer: React.FC = () => {
                                     setIsDragging(false);
                                 }}
                                 onMouseDown={() => {
+                                    setIsDragging(true);
+                                }}
+                                onTouchStart={() => {
+                                    spotifyApi.seek(songPosition);
+                                    setIsDragging(false);
+                                }}
+                                onTouchEnd={() => {
                                     setIsDragging(true);
                                 }}
                             />{' '}
