@@ -394,7 +394,7 @@ const SpotiPlayer: React.FC = () => {
                 lastAngleRef.current = angle;
             }
 
-            ev.preventDefault();
+            // ev.preventDefault();
         };
 
         const onPointerUp = (ev: PointerEvent) => {
@@ -402,7 +402,7 @@ const SpotiPlayer: React.FC = () => {
             (ev.target as Element).releasePointerCapture(ev.pointerId);
             pointerIdRef.current = null;
             lastAngleRef.current = null;
-            ev.preventDefault();
+            // ev.preventDefault();
         };
 
         el.addEventListener('pointerdown', onPointerDown);
