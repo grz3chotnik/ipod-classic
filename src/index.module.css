@@ -1,0 +1,44 @@
+.Control {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 15rem;
+    padding-block: 0.75rem;
+    touch-action: none;
+    user-select: none;
+}
+@media screen and (max-width: 600px) {
+    .Control {
+        width: 65vw;
+    }
+}
+
+.Track {
+    width: 100%;
+    height: 15px;
+    background: linear-gradient(0deg, rgba(230, 230, 230, 1) 11%, rgba(247, 247, 247, 1) 55%, rgba(255, 255, 255, 1) 55%);
+    -webkit-box-reflect: below 0px linear-gradient(to bottom, rgba(0, 0, 0, 0.0) 30%, rgba(0, 0, 0, 0.4) 100%);
+    box-shadow: inset 0 0 0 1px var(--color-gray-200);
+    user-select: none;
+    border-top: 0.5px solid gray;;
+    border-bottom: 0.5px solid gray;
+}
+
+.Indicator {
+    background: #52BFE3;
+    background: linear-gradient(0deg, rgba(82, 191, 227, 1) 11%, rgba(84, 158, 244, 1) 55%, rgba(110, 177, 255, 1) 55%);
+    user-select: none;
+}
+
+.Thumb {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100%;
+    background-color: white;
+    outline: 1px solid var(--color-gray-300);
+    user-select: none;
+
+    &:has(:focus-visible) {
+        outline: 2px solid var(--color-blue);
+    }
+}

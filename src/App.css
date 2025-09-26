@@ -2,6 +2,9 @@
  * @NOTE: Prepend a `~` to css file paths that are in your node_modules
  *        See https://github.com/webpack-contrib/sass-loader#imports
  */
+.root {
+    isolation: isolate;
+}
 
 body {
     position: relative;
@@ -16,6 +19,8 @@ body {
     width: 100%;
     margin: 0 auto;
 }
+
+
 
 button {
     display: flex;
@@ -487,3 +492,133 @@ h2 {
 }
 
 
+
+@media screen and (max-width: 600px) {
+    .player {
+        height: 100vh;
+        width: 100vw;
+        border-radius: 0;
+        /*box-shadow: none; */
+    }
+
+    .Screen {
+        width: 90%;
+        /*height: 40%;*/
+        margin: 31px 31px 50px;
+        /*border: 3px solid black;*/
+        border-radius: 10px;
+    }
+
+    .screen-playlist,
+    .screen-list,
+    .screen-nowplaying {
+        height: 100%; /* Adjust height to fit container */
+    }
+
+    /*.Scrollwheel {*/
+    /*    gap: 50px; !* Reduce gap for smaller screens *!*/
+    /*    grid-template-columns: repeat(3, 20px); !* Smaller grid cells *!*/
+    /*    grid-template-rows: repeat(3, 20px);*/
+    /*}*/
+
+    /*.ScrollwheelBg {*/
+    /*    width: 200px; !* Smaller scroll wheel background *!*/
+    /*    height: 200px;*/
+    /*}*/
+
+    /*.center {*/
+    /*    width: 80px; !* Smaller center button *!*/
+    /*    height: 80px;*/
+    /*    border-radius: 80px;*/
+    /*}*/
+
+    /*h1 {*/
+    /*    font-size: 16px;*/
+    /*}*/
+
+    /*h2 {*/
+    /*    font-size: 14px;*/
+    /*    height: 20px;*/
+    /*}*/
+
+    /*p {*/
+    /*    font-size: 12px;*/
+    /*    padding-left: 4px;*/
+    /*}*/
+
+    /*li {*/
+    /*    width: 100%;*/
+    /*    font-size: 12px;*/
+    /*}*/
+
+    .seeker {
+        width: 80%;
+        left: 10%;
+    }
+
+    .seekerdiv {
+        width: 100%;
+        padding: 0;
+    }
+
+    .musicbar {
+        width: 80%;
+    }
+
+    input[type="range"] {
+        height: 10px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        width: 2px;
+        height: 25px;
+    }
+
+    .nowplayingscreen {
+        height: 70%;
+    }
+
+    .playlistimg {
+        /*height: 20px;*/
+        /*width: 20px;*/
+    }
+
+    .statusbar {
+        /*height: 15px;*/
+        font-size: 12px ;
+    }
+}
+
+:root {
+    --color-blue: oklch(45% 50% 264deg);
+    --color-red: oklch(50% 55% 31deg);
+
+    --color-gray-50: oklch(98.42% 0.0034 247.86deg);
+    --color-gray-100: oklch(12% 9.5% 264deg / 5%);
+    --color-gray-200: oklch(12% 9% 264deg / 8%);
+    --color-gray-300: oklch(12% 8.5% 264deg / 17%);
+    --color-gray-400: oklch(12% 8% 264deg / 38%);
+    --color-gray-500: oklch(12% 7.5% 264deg / 50%);
+    --color-gray-600: oklch(12% 7% 264deg / 67%);
+    --color-gray-700: oklch(0.458 0.296 264.719 / 0.77);
+    --color-gray-800: oklch(12% 5% 264deg / 85%);
+    --color-gray-900: oklch(12% 5% 264deg / 90%);
+    --color-gray-950: oklch(12% 5% 264deg / 95%);
+
+    @media (prefers-color-scheme: dark) {
+        --color-blue: oklch(69% 50% 264deg);
+        --color-red: oklch(80% 55% 31deg);
+
+        --color-gray-50: oklch(17% 1% 264deg);
+        --color-gray-100: oklch(28% 3% 264deg / 65%);
+        --color-gray-200: oklch(31% 3% 264deg / 80%);
+        --color-gray-300: oklch(35% 3% 264deg / 80%);
+        --color-gray-400: oklch(47% 3.5% 264deg / 80%);
+        --color-gray-500: oklch(64% 4% 264deg / 80%);
+        --color-gray-600: oklch(82% 4% 264deg / 80%);
+        --color-gray-700: oklch(92% 4.5% 264deg / 80%);
+        --color-gray-800: oklch(93% 3.5% 264deg / 85%);
+        --color-gray-900: oklch(95% 2% 264deg / 90%);
+        --color-gray-950: oklch(94% 1.5% 264deg / 95%);
+    }
+}

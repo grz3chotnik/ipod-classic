@@ -9,12 +9,15 @@ import Play from '../assets/Play.svg';
 import Pause from '../assets/Pause.svg';
 import Battery from '../assets/battery.svg';
 import Batterylow from '../assets/batterylow.svg';
+import {Slider} from '@base-ui-components/react/slider';
+import styles from '../index.module.css';
 
 const spotifyApi = new SpotifyWebApi();
 
 const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
 const REDIRECT_URI = 'https://ipod.2004.lol/';
 // const REDIRECT_URI = 'http://localhost:1212/';
+// const REDIRECT_URI = 'http://192.168.1.53:1212/';
 
 
 const SCOPES = [
@@ -448,9 +451,32 @@ const SpotiPlayer: React.FC = () => {
     };
 
     return (
-
-        <div className="player">
-
+        <div className="player root">
+            {/*<Slider.Root defaultValue={50}*/}
+            {/*             value={50}*/}
+            {/*             max={100}*/}
+            {/*             onValueCommitted={(value) => {*/}
+            {/*                 spotifyApi.seek(value)*/}
+            {/*                 setIsDragging(false)*/}
+            {/*             }}*/}
+            {/*             onValueChange={(value) => {*/}
+            {/*                 handleSeek(value)*/}
+            {/*                 setIsDragging(true)*/}
+            {/*             }}>*/}
+            {/*    <Slider.Control className={styles.Control}>*/}
+            {/*        <Slider.Track className={styles.Track}>*/}
+            {/*            <Slider.Indicator className={styles.Indicator}/>*/}
+            {/*            /!*<Slider.Thumb className={styles.Thumb}/>*!/*/}
+            {/*        </Slider.Track>*/}
+            {/*    </Slider.Control>*/}
+            {/*</Slider.Root>*/}
+            {/*<div className="scrubber">*/}
+            {/*    <div className="scrubberprogress"*/}
+            {/*         style={{width: `${(songPosition / songDuration) * 100}%`}}*/}
+            {/*        // onMouseDown={handleMouseDown}*/}
+            {/*        // onMouseUp={handleMouseUp}*/}
+            {/*    ></div>*/}
+            {/*</div>*/}
             <div className="Screen">
                 <div className="statusbar ">
                     <p className="leftinfo">{hours}:{minutes}</p>
@@ -476,13 +502,6 @@ const SpotiPlayer: React.FC = () => {
                         <div className="screen screen-playlist">
 
 
-                            {/*<div className="statusbar ">*/}
-                            {/*    <p className="leftinfo">{hours}:{minutes}</p>*/}
-                            {/*    <div className="rightinfo">*/}
-                            {/*        <img src={isPlaying ? Play : Pause} height="15px" alt="play /pause"/>*/}
-                            {/*        <img src={Battery} height="15px" alt="battery"/>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
                             <div className="playlistall">
                                 {playlists.length > 0 ? (
                                     playlists.map((playlist, index: number) => (
@@ -592,39 +611,61 @@ const SpotiPlayer: React.FC = () => {
                                 </p>
                             </div>
                         </div>
-                        <div className="seekerdiv">
-                            <p className="songposition"> {formatTime(songPosition)} </p>
-                            <input
-                                type="range"
-                                className="seeker"
-                                value={songPosition}
-                                max={songDuration}
-                                onChange={(e) => {
-                                    handleSeek(e.target.value);
-                                }}
-                                onMouseUp={() => {
-                                    spotifyApi.seek(songPosition);
-                                    setIsDragging(false);
-                                }}
-                                onMouseDown={() => {
-                                    setIsDragging(true);
-                                }}
-                                onTouchStart={() => {
-                                    spotifyApi.seek(songPosition);
-                                    setIsDragging(false);
-                                }}
-                                onTouchEnd={() => {
-                                    setIsDragging(true);
-                                }}
-                            />{' '}
 
-                            <div className="scrubber">
-                                <div className="scrubberprogress"
-                                     style={{width: `${(songPosition / songDuration) * 100}%`}}
-                                    // onMouseDown={handleMouseDown}
-                                    // onMouseUp={handleMouseUp}
-                                ></div>
-                            </div>
+
+                        <div className="seekerdiv">
+
+
+                            <p className="songposition"> {formatTime(songPosition)} </p>
+                            {/*<input*/}
+                            {/*    type="range"*/}
+                            {/*    className="seeker"*/}
+                            {/*    value={songPosition}*/}
+                            {/*    max={songDuration}*/}
+                            {/*    onChange={(e) => {*/}
+                            {/*        handleSeek(e.target.value);*/}
+                            {/*    }}*/}
+                            {/*    onMouseUp={() => {*/}
+                            {/*        spotifyApi.seek(songPosition);*/}
+                            {/*        setIsDragging(false);*/}
+                            {/*    }}*/}
+                            {/*    onMouseDown={() => {*/}
+                            {/*        setIsDragging(true);*/}
+                            {/*    }}*/}
+                            {/*    onTouchStart={() => {*/}
+                            {/*        spotifyApi.seek(songPosition);*/}
+                            {/*        setIsDragging(false);*/}
+                            {/*    }}*/}
+                            {/*    onTouchEnd={() => {*/}
+                            {/*        setIsDragging(true);*/}
+                            {/*    }}*/}
+                            {/*/>{' '}*/}
+                            <Slider.Root defaultValue={0}
+                                         value={songPosition}
+                                         max={songDuration}
+                                         onValueCommitted={(value) => {
+                                             spotifyApi.seek(value)
+                                             setIsDragging(false)
+                                         }}
+                                         onValueChange={(value) => {
+                                             handleSeek(value)
+                                             setIsDragging(true)
+                                         }}>
+                                <Slider.Control className={styles.Control}>
+                                    <Slider.Track className={styles.Track}>
+                                        <Slider.Indicator className={styles.Indicator}/>
+                                        {/*<Slider.Thumb className={styles.Thumb}/>*/}
+                                    </Slider.Track>
+                                </Slider.Control>
+                            </Slider.Root>
+
+                            {/*<div className="scrubber">*/}
+                            {/*    <div className="scrubberprogress"*/}
+                            {/*         style={{width: `${(songPosition / songDuration) * 100}%`}}*/}
+                            {/*        // onMouseDown={handleMouseDown}*/}
+                            {/*        // onMouseUp={handleMouseUp}*/}
+                            {/*    ></div>*/}
+                            {/*</div>*/}
                             <p className="songposition">{formatTime(songDuration)}</p>
                         </div>
                     </div>

@@ -8,6 +8,7 @@ import SpotiPlayer from './components/SpotiPlayer.js';
 export default function App() {
     return (
         <>
+
             <Router>
                 <div>
 
