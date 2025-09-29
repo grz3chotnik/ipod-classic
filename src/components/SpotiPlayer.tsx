@@ -93,6 +93,13 @@ const SpotiPlayer: React.FC = () => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const handleTokenExpiration = () => {
+        localStorage.removeItem('token');
+        setToken(null);
+        window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+    };
+
+
     useEffect(() => {
         const storedToken = localStorage.getItem('token');
         if (storedToken) {
@@ -147,6 +154,7 @@ const SpotiPlayer: React.FC = () => {
                 },
                 function (err) {
                     console.error(err);
+                    handleTokenExpiration()
                 },
             );
         };
