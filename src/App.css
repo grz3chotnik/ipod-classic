@@ -21,7 +21,6 @@ body {
 }
 
 
-
 button {
     display: flex;
     background-color: white;
@@ -494,12 +493,15 @@ h2 {
 }
 
 
-
 @media screen and (max-width: 600px) {
     .player {
         height: 100vh;
         width: 100vw;
         border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        /*gap: 50px;*/
         /*box-shadow: none; */
     }
 
@@ -511,47 +513,17 @@ h2 {
         border-radius: 10px;
     }
 
+    .Scrollwheel {
+        /*align-self: end;*/
+        height: 45vh;
+        /*justify-content: center;*/
+    }
+
     .screen-playlist,
     .screen-list,
     .screen-nowplaying {
-        height: 100%; /* Adjust height to fit container */
+        height: 100%;
     }
-
-    /*.Scrollwheel {*/
-    /*    gap: 50px; !* Reduce gap for smaller screens *!*/
-    /*    grid-template-columns: repeat(3, 20px); !* Smaller grid cells *!*/
-    /*    grid-template-rows: repeat(3, 20px);*/
-    /*}*/
-
-    /*.ScrollwheelBg {*/
-    /*    width: 200px; !* Smaller scroll wheel background *!*/
-    /*    height: 200px;*/
-    /*}*/
-
-    /*.center {*/
-    /*    width: 80px; !* Smaller center button *!*/
-    /*    height: 80px;*/
-    /*    border-radius: 80px;*/
-    /*}*/
-
-    /*h1 {*/
-    /*    font-size: 16px;*/
-    /*}*/
-
-    /*h2 {*/
-    /*    font-size: 14px;*/
-    /*    height: 20px;*/
-    /*}*/
-
-    /*p {*/
-    /*    font-size: 12px;*/
-    /*    padding-left: 4px;*/
-    /*}*/
-
-    /*li {*/
-    /*    width: 100%;*/
-    /*    font-size: 12px;*/
-    /*}*/
 
     .seeker {
         width: 80%;
@@ -585,9 +557,13 @@ h2 {
         /*width: 20px;*/
     }
 
+    .playlistsongslist {
+
+    }
+
     .statusbar {
         /*height: 15px;*/
-        font-size: 12px ;
+        font-size: 12px;
     }
 }
 
