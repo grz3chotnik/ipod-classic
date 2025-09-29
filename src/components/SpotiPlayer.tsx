@@ -77,7 +77,7 @@ const SpotiPlayer: React.FC = () => {
 
     const [screen, setScreen] = useState(Screen.Playlist);
 
-    const handleSeek = (number: string) => {
+    const handleSeek = (number: number) => {
         setSongPosition(Number(number));
     };
 
@@ -430,7 +430,6 @@ const SpotiPlayer: React.FC = () => {
         if (screen === Screen.NowPlaying) {
             setScreen(Screen.List);
         }
-        // if (highlightedTrackIndex === )
     };
 
     const onPlaylistClick = (
@@ -659,13 +658,7 @@ const SpotiPlayer: React.FC = () => {
                                 </Slider.Control>
                             </Slider.Root>
 
-                            {/*<div className="scrubber">*/}
-                            {/*    <div className="scrubberprogress"*/}
-                            {/*         style={{width: `${(songPosition / songDuration) * 100}%`}}*/}
-                            {/*        // onMouseDown={handleMouseDown}*/}
-                            {/*        // onMouseUp={handleMouseUp}*/}
-                            {/*    ></div>*/}
-                            {/*</div>*/}
+
                             <p className="songposition">{formatTime(songDuration)}</p>
                         </div>
                     </div>
