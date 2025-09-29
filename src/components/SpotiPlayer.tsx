@@ -15,8 +15,8 @@ import styles from '../index.module.css';
 const spotifyApi = new SpotifyWebApi();
 
 const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
-const REDIRECT_URI = 'https://ipod.2004.lol/';
-// const REDIRECT_URI = 'http://localhost:1212/';
+// const REDIRECT_URI = 'https://ipod.2004.lol/';
+const REDIRECT_URI = 'http://localhost:1212/';
 // const REDIRECT_URI = 'http://192.168.1.53:1212/';
 
 
@@ -94,21 +94,28 @@ const SpotiPlayer: React.FC = () => {
     };
 
     useEffect(() => {
-        const hash = window.location.hash.substring(1);
-        const params = new URLSearchParams(hash);
-        const accessToken = params.get('access_token');
-
-        if (accessToken) {
-            setToken(accessToken);
-            window.history.replaceState(
-                {},
-                document.title,
-                window.location.pathname + window.location.search,
-            );
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+            setToken(storedToken);
         } else {
-            window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            const accessToken = params.get('access_token');
+            if (accessToken) {
+                setToken(accessToken);
+                localStorage.setItem('token', accessToken);
+                window.history.replaceState(
+                    {},
+                    document.title,
+                    window.location.pathname + window.location.search
+                );
+            } else {
+                window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+            }
         }
     }, []);
+
+
 
     useEffect(() => {
         const interval = setInterval(() => {
