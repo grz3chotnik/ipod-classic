@@ -14,7 +14,7 @@ import styles from '../index.module.css';
 
 const spotifyApi = new SpotifyWebApi();
 
-const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
+const CLIENT_ID = '883f91d3b0a841e687796d625f391f44';
 const REDIRECT_URI = 'https://ipod.2004.lol/';
 // const REDIRECT_URI = 'http://localhost:1212/';
 // const REDIRECT_URI = 'http://192.168.1.53:1212/';
