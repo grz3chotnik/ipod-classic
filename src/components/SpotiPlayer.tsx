@@ -16,8 +16,6 @@ const spotifyApi = new SpotifyWebApi();
 
 const CLIENT_ID = 'cff99ec39a2c4666bfaeaf792e4aaa7b';
 const REDIRECT_URI = 'https://ipod.2004.lol/';
-// const REDIRECT_URI = 'http://localhost:1212/';
-// const REDIRECT_URI = 'http://192.168.1.53:1212/';
 
 
 const SCOPES = [
@@ -724,6 +722,8 @@ const SpotiPlayer: React.FC = () => {
                 <div className="ScrollwheelBg"/>
             </div>
         </div>
+
+
     );
 };
 
