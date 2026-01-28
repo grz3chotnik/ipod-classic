@@ -29,6 +29,119 @@ const SCOPES = [
     'user-modify-playback-state',
 ].join(' ');
 
+// PKCE helper functions
+function generateRandomString(length: number): string {
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const values = crypto.getRandomValues(new Uint8Array(length));
+    return values.reduce((acc, x) => acc + possible[x % possible.length], '');
+}
+
+async function sha256(plain: string): Promise<ArrayBuffer> {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    return window.crypto.subtle.digest('SHA-256', data);
+}
+
+function base64encode(input: ArrayBuffer): string {
+    return btoa(String.fromCharCode(...new Uint8Array(input)))
+        .replace(/=/g, '')
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_');
+}
+
+async function generateCodeChallenge(codeVerifier: string): Promise<string> {
+    const hashed = await sha256(codeVerifier);
+    return base64encode(hashed);
+}
+
+async function redirectToSpotifyAuth(): Promise<void> {
+    const codeVerifier = generateRandomString(64);
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+    localStorage.setItem('code_verifier', codeVerifier);
+
+    const params = new URLSearchParams({
+        client_id: CLIENT_ID,
+        response_type: 'code',
+        redirect_uri: REDIRECT_URI,
+        scope: SCOPES,
+        code_challenge_method: 'S256',
+        code_challenge: codeChallenge,
+    });
+
+    window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
+}
+
+async function exchangeCodeForToken(code: string): Promise<string | null> {
+    const codeVerifier = localStorage.getItem('code_verifier');
+    if (!codeVerifier) {
+        console.error('No code verifier found');
+        return null;
+    }
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: CLIENT_ID,
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: REDIRECT_URI,
+            code_verifier: codeVerifier,
+        }),
+    });
+
+    if (!response.ok) {
+        console.error('Token exchange failed:', await response.text());
+        return null;
+    }
+
+    const data = await response.json();
+    localStorage.removeItem('code_verifier');
+
+    // Store refresh token for later use
+    if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+    }
+
+    return data.access_token;
+}
+
+async function refreshAccessToken(): Promise<string | null> {
+    const refreshToken = localStorage.getItem('refresh_token');
+    if (!refreshToken) {
+        return null;
+    }
+
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            client_id: CLIENT_ID,
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+        }),
+    });
+
+    if (!response.ok) {
+        console.error('Token refresh failed');
+        return null;
+    }
+
+    const data = await response.json();
+
+    // Update refresh token if a new one is provided
+    if (data.refresh_token) {
+        localStorage.setItem('refresh_token', data.refresh_token);
+    }
+
+    return data.access_token;
+}
+
 const SpotiPlayer: React.FC = () => {
     const [token, setToken] = useState<string | null>(null);
     const [player, setPlayer] = useState<Spotify.Player | null>(null);
@@ -92,33 +205,86 @@ const SpotiPlayer: React.FC = () => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
-    const handleTokenExpiration = () => {
+    const handleTokenExpiration = async () => {
         localStorage.removeItem('token');
         setToken(null);
-        window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+
+        // Try to refresh the token first
+        const newToken = await refreshAccessToken();
+        if (newToken) {
+            setToken(newToken);
+            localStorage.setItem('token', newToken);
+        } else {
+            // If refresh fails, redirect to auth
+            localStorage.removeItem('refresh_token');
+            redirectToSpotifyAuth();
+        }
     };
 
 
     useEffect(() => {
-        const storedToken = localStorage.getItem('token');
-        if (storedToken) {
-            setToken(storedToken);
-        } else {
-            const hash = window.location.hash.substring(1);
-            const params = new URLSearchParams(hash);
-            const accessToken = params.get('access_token');
-            if (accessToken) {
-                setToken(accessToken);
-                localStorage.setItem('token', accessToken);
-                window.history.replaceState(
-                    {},
-                    document.title,
-                    window.location.pathname + window.location.search
-                );
-            } else {
-                window.location.href = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPES)}&show_dialog=true`;
+        const initAuth = async () => {
+            // Check for errors in URL (e.g., from failed OAuth)
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            if (error) {
+                console.error('OAuth error:', error);
+                // Clear URL and try again
+                window.history.replaceState({}, document.title, window.location.pathname);
+                localStorage.removeItem('token');
+                localStorage.removeItem('refresh_token');
+                localStorage.removeItem('code_verifier');
+                redirectToSpotifyAuth();
+                return;
             }
-        }
+
+            // Check for authorization code (PKCE flow callback)
+            const code = urlParams.get('code');
+            if (code) {
+                const accessToken = await exchangeCodeForToken(code);
+                if (accessToken) {
+                    setToken(accessToken);
+                    localStorage.setItem('token', accessToken);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } else {
+                    console.error('Failed to exchange code for token');
+                    redirectToSpotifyAuth();
+                }
+                return;
+            }
+
+            // Check for stored token
+            const storedToken = localStorage.getItem('token');
+            if (storedToken) {
+                setToken(storedToken);
+                return;
+            }
+
+            // Check for hash-based token (legacy implicit flow - for backwards compatibility)
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const hashParams = new URLSearchParams(hash);
+                const hashError = hashParams.get('error');
+                if (hashError) {
+                    console.error('OAuth hash error:', hashError);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('code_verifier');
+                }
+                const accessToken = hashParams.get('access_token');
+                if (accessToken) {
+                    setToken(accessToken);
+                    localStorage.setItem('token', accessToken);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    return;
+                }
+            }
+
+            // No token found, start PKCE auth flow
+            redirectToSpotifyAuth();
+        };
+
+        initAuth();
     }, []);
 
 
